@@ -466,33 +466,33 @@ function openProjectDetail(id) {
     <span class="project-cat-badge ${b.cls}">${b.label}</span>
     <a href="${url}" target="_blank" rel="noopener" class="pd-github-link">GitHub ↗</a>`;
   document.getElementById('pd-edit-btn').style.display = adminAuthed ? '' : 'none';
+  // Filter sections to only those with content
+  const filledSections = DOC_SECTIONS.filter(s => docs[s.key] && (docs[s.key].text || docs[s.key].image));
+
   // Nav
   const navEl = document.getElementById('proj-detail-nav');
-  navEl.innerHTML = DOC_SECTIONS.map(s => {
-    const filled = docs[s.key] && (docs[s.key].text||docs[s.key].image);
-    return `<a href="#pd-sec-${s.key}" class="pd-nav-link${filled?'':' pd-nav-empty'}" onclick="scrollToDetailSection('${s.key}',event)">${s.icon} ${s.title}</a>`;
+  navEl.innerHTML = filledSections.map(s => {
+    return `<a href="#pd-sec-\${s.key}" class="pd-nav-link" onclick="scrollToDetailSection('\${s.key}',event)">\${s.icon} \${s.title}</a>`;
   }).join('');
   // Content
   const contentEl = document.getElementById('proj-detail-content');
-  const totalFilled = DOC_SECTIONS.filter(s=>docs[s.key]&&(docs[s.key].text||docs[s.key].image)).length;
+  const totalFilled = filledSections.length;
   contentEl.innerHTML = `
     <div class="pd-intro">
-      <p class="pd-desc">${esc(p.desc)}</p>
-      ${totalFilled===0?`<div class="pd-empty-section" style="margin-top:24px">
+      <p class="pd-desc">\${esc(p.desc)}</p>
+      \${totalFilled===0?\`<div class="pd-empty-section" style="margin-top:24px">
         <p>📖 No engineering documentation added yet.</p>
-        ${adminAuthed?'<p style="margin-top:8px;font-size:.85rem">Use the <strong>✏️ Edit Docs</strong> button above to add project documentation.</p>':''}
-      </div>`:''}
+        \${adminAuthed?'<p style="margin-top:8px;font-size:.85rem">Use the <strong>✏️ Edit Docs</strong> button above to add project documentation.</p>':''}
+      </div>\`:\`\`}
     </div>
-    ${DOC_SECTIONS.map(s => {
-      const sec    = docs[s.key] || {text:'',image:''};
-      const filled = sec.text || sec.image;
-      if (!filled) return `<div class="pd-section pd-section-empty" id="pd-sec-${s.key}"><h2 class="pd-section-title">${s.icon} ${s.title}</h2><div class="pd-empty-section">${adminAuthed?'✏️ Not documented — click Edit Docs to add content.':'Not documented yet.'}</div></div>`;
-      return `<div class="pd-section" id="pd-sec-${s.key}">
-        <h2 class="pd-section-title">${s.icon} ${s.title}</h2>
-        ${sec.text?`<div class="pd-section-text">${nl2br(sec.text)}</div>`:''}
-        ${sec.image?`<div class="pd-section-img-wrap"><img src="${sec.image}" alt="${esc(s.title)}" class="pd-section-img" onclick="openSingleImageLightbox('${sec.image.replace(/'/g,'\\\'')}')" /></div>`:''}
-      </div>`;
-    }).join('')}`;
+    \${filledSections.map(s => {
+      const sec = docs[s.key];
+      return \`<div class="pd-section" id="pd-sec-\${s.key}">
+        <h2 class="pd-section-title">\${s.icon} \${s.title}</h2>
+        \${sec.text?\`<div class="pd-section-text">\${nl2br(sec.text)}</div>\`:\`\`}
+        \${sec.image?\`<div class="pd-section-img-wrap"><img src="\${sec.image}" alt="\${esc(s.title)}" class="pd-section-img" onclick="openSingleImageLightbox('\${sec.image.replace(/'/g,'\\\\\\'')}')" /></div>\`:\`\`}
+      </div>\`;
+    }).join('')}\`;
   // Open panel
   document.getElementById('proj-detail-panel').classList.add('open');
   document.body.style.overflow = 'hidden';
