@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Dumindu Dilshan — Electronics & Telecommunication Engineer, Robotics Expert, Co-Founder at Fabnest." />
+  <meta name="author" content="Dumindu Dilshan" />
+  <title>Dumindu Dilshan | Robotics & Embedded Systems Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- ======================== NAV ======================== -->
+  <nav id="navbar">
+    <div class="nav-container">
+      <a href="#home" class="nav-logo" id="nav-logo-link"><span class="logo-bracket">&lt;</span>DD<span
+          class="logo-bracket">/&gt;</span></a>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#about" class="nav-link">About</a></li>
+        <li><a href="#skills" class="nav-link">Skills</a></li>
+        <li><a href="#projects" class="nav-link">Projects</a></li>
+        <li><a href="#designs" class="nav-link">Designs</a></li>
+        <li><a href="#experience" class="nav-link">Experience</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- ======================== HERO ======================== -->
+  <section id="home" class="hero">
+    <div class="hero-bg-grid"></div>
+    <div class="hero-orb orb-1"></div>
+    <div class="hero-orb orb-2"></div>
+    <div class="hero-content">
+      <div class="hero-text">
+        <p class="hero-greeting">👋 Hello, World! I'm</p>
+        <h1 class="hero-name" id="hero-name">Dumindu Dilshan</h1>
+        <div class="hero-role-wrapper">
+          <span class="hero-role-static">I build </span>
+          <span class="hero-role-dynamic" id="typed-text"></span>
+          <span class="cursor">|</span>
+        </div>
+        <p class="hero-sub" id="hero-sub">Electronics &amp; Telecom Undergraduate · Co-Founder <a
+            href="https://Fabnest3D.com" target="_blank" rel="noopener" class="hero-link">@Fabnest</a> · Colombo, Sri
+          Lanka 🇱🇰</p>
+        <div class="hero-actions">
+          <a href="#projects" class="btn btn-primary" id="hero-view-projects">View Projects</a>
+          <a href="#designs" class="btn btn-secondary" id="hero-view-designs">My Designs</a>
+          <a href="#contact" class="btn btn-ghost" id="hero-contact">Contact Me</a>
+        </div>
+      </div>
+      <div class="hero-code">
+        <div class="code-window">
+          <div class="code-titlebar">
+            <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
+            <span class="code-filename">dumindu.py</span>
+          </div>
+          <pre class="code-body"><code><span class="kw">class</span> <span class="cls">DuminduDilshan</span>:
+  <span class="kw">def</span> <span class="fn">__init__</span>(self):
+    self.role    = <span class="str">"ECT Engineer"</span>
+    self.company = <span class="str">"Co-Founder @Fabnest"</span>
+    self.passions = [
+      <span class="str">"Robotics 🤖"</span>,
+      <span class="str">"UWB Positioning 📡"</span>,
+      <span class="str">"LiDAR SLAM 🗺️"</span>,
+      <span class="str">"Embedded AI 🧠"</span>
+    ]
+    self.repos   = <span class="num">42</span>
+
+  <span class="kw">def</span> <span class="fn">say_hi</span>(self):
+    <span class="fn">print</span>(<span class="str">"Let's build something amazing!"</span>)
+
+me = <span class="cls">DuminduDilshan</span>()
+me.<span class="fn">say_hi</span>()</code></pre>
+        </div>
+      </div>
+    </div>
+    <div class="hero-scroll-hint"><span>Scroll to explore</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </section>
+
+  <!-- ======================== ABOUT ======================== -->
+  <section id="about" class="section about">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">01 / About</span>
+        <h2 class="section-title">Who Am I?</h2>
+      </div>
+      <div class="about-grid">
+        <div class="about-avatar-wrap">
+          <div class="avatar-ring">
+            <img src="https://avatars.githubusercontent.com/u/165763174?v=4" alt="Dumindu Dilshan" class="avatar-img"
+              id="about-avatar" />
+          </div>
+          <div class="about-stats">
+            <div class="stat-card"><span class="stat-num" id="stat-repos">42</span><span
+                class="stat-label">Repositories</span></div>
+            <div class="stat-card"><span class="stat-num" id="stat-years">2+</span><span class="stat-label">Years
+                Building</span></div>
+            <div class="stat-card"><span class="stat-num">∞</span><span class="stat-label">Ideas</span></div>
+          </div>
+        </div>
+        <!-- JS fills this div from profile data -->
+        <div class="about-content" id="about-content-container"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== SKILLS ======================== -->
+  <section id="skills" class="section skills">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">02 / Skills</span>
+        <h2 class="section-title">Tech Arsenal</h2>
+      </div>
+      <!-- JS renders skill categories here -->
+      <div class="skills-grid" id="skills-container"></div>
+    </div>
+  </section>
+
+  <!-- ======================== PROJECTS ======================== -->
+  <section id="projects" class="section projects">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">03 / Projects</span>
+        <h2 class="section-title">What I've Built</h2>
+        <p class="section-sub" id="projects-count-label">42 repositories across robotics, positioning, AI, and web</p>
+      </div>
+      <div class="project-filters" id="project-filters">
+        <button class="filter-btn active" data-filter="all" id="filter-all">All</button>
+        <button class="filter-btn" data-filter="uwb" id="filter-uwb">📡 UWB</button>
+        <button class="filter-btn" data-filter="lidar" id="filter-lidar">🗺️ LiDAR</button>
+        <button class="filter-btn" data-filter="robotics" id="filter-robotics">🤖 Robotics</button>
+        <button class="filter-btn" data-filter="desktop" id="filter-desktop">🖥️ Desktop Bots</button>
+        <button class="filter-btn" data-filter="sensor" id="filter-sensor">📊 Sensors</button>
+        <button class="filter-btn" data-filter="web" id="filter-web">🌐 Web</button>
+        <button class="filter-btn" data-filter="ai" id="filter-ai">🧠 AI &amp; Vision</button>
+      </div>
+      <div class="projects-grid" id="projects-grid"></div>
+      <div class="projects-cta">
+        <a href="https://github.com/DuminduDilshan?tab=repositories" target="_blank" rel="noopener"
+          class="btn btn-primary" id="view-all-repos">View All Repos on GitHub ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== DESIGNS ======================== -->
+  <section id="designs" class="section designs">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">04 / Designs</span>
+        <h2 class="section-title">CAD &amp; PCB Gallery</h2>
+        <p class="section-sub">Hardware designs — PCB layouts, 3D CAD models, and schematics</p>
+      </div>
+      <div class="design-filters">
+        <button class="filter-btn active" data-design-filter="all" id="dfilter-all">All</button>
+        <button class="filter-btn" data-design-filter="pcb" id="dfilter-pcb">🔌 PCB</button>
+        <button class="filter-btn" data-design-filter="cad" id="dfilter-cad">🖨️ 3D CAD</button>
+        <button class="filter-btn" data-design-filter="schematic" id="dfilter-schematic">📐 Schematics</button>
+        <button class="filter-btn" data-design-filter="other" id="dfilter-other">🎨 Other</button>
+      </div>
+      <div class="designs-grid" id="designs-grid">
+        <div class="designs-empty" id="designs-empty">
+          <div class="empty-icon">🎨</div>
+          <p>No designs yet.</p>
+          <p class="empty-sub">Press <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>A</kbd> → Designs tab to add your CAD &amp;
+            PCB designs!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== EXPERIENCE ======================== -->
+  <section id="experience" class="section experience">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">05 / Experience</span>
+        <h2 class="section-title">Journey So Far</h2>
+      </div>
+      <!-- JS renders timeline entries here -->
+      <div class="timeline" id="experience-container"></div>
+    </div>
+  </section>
+
+  <!-- ======================== CONTACT ======================== -->
+  <section id="contact" class="section contact">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">06 / Contact</span>
+        <h2 class="section-title">Let's Collaborate!</h2>
+        <p class="section-sub">Open to robotics projects, IoT development, embedded AI, and research collaborations.</p>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-links">
+          <a href="https://www.linkedin.com/in/dumindu-dilshan" target="_blank" rel="noopener" class="contact-card"
+            id="contact-linkedin">
+            <div class="contact-icon linkedin-icon">in</div>
+            <div><strong>LinkedIn</strong><span id="contact-linkedin-text">dumindu-dilshan</span></div>
+          </a>
+          <a href="mailto:dumindudilshan66@gmail.com" class="contact-card" id="contact-gmail">
+            <div class="contact-icon gmail-icon">@</div>
+            <div><strong>Email</strong><span id="contact-email-text">dumindudilshan66@gmail.com</span></div>
+          </a>
+          <a href="https://github.com/DuminduDilshan" target="_blank" rel="noopener" class="contact-card"
+            id="contact-github">
+            <div class="contact-icon github-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22">
+                <path
+                  d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.73.083-.73 1.205.085 1.84 1.238 1.84 1.238 1.07 1.835 2.807 1.305 3.492.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12z" />
+              </svg>
+            </div>
+            <div><strong>GitHub</strong><span id="contact-github-text">DuminduDilshan</span></div>
+          </a>
+          <a href="https://Fabnest3D.com" target="_blank" rel="noopener" class="contact-card" id="contact-website">
+            <div class="contact-icon web-icon">🌐</div>
+            <div><strong>Website</strong><span id="contact-website-text">Fabnest3D.com</span></div>
+          </a>
+        </div>
+        <div class="contact-form-wrap">
+          <form class="contact-form" id="contact-form" onsubmit="handleFormSubmit(event)">
+            <div class="form-group"><label for="form-name">Name</label><input type="text" id="form-name"
+                placeholder="Your name" required /></div>
+            <div class="form-group"><label for="form-email">Email</label><input type="email" id="form-email"
+                placeholder="your@email.com" required /></div>
+            <div class="form-group"><label for="form-message">Message</label><textarea id="form-message" rows="5"
+                placeholder="Let's build something amazing together..." required></textarea></div>
+            <button type="submit" class="btn btn-primary form-submit" id="form-submit-btn">Send Message 🚀</button>
+            <p class="form-note" id="form-note"></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== FOOTER ======================== -->
+  <footer class="footer">
+    <div class="container">
+      <p>Built with 💙 and 🤖 by <a href="https://github.com/DuminduDilshan" target="_blank" rel="noopener"
+          id="footer-github-link">DuminduDilshan</a></p>
+      <p class="footer-sub" id="footer-sub">Electronics &amp; Telecom Undergraduate · Co-Founder @ Fabnest · Colombo,
+        Sri Lanka 🇱🇰</p>
+      <button class="admin-hint-btn" id="admin-hint-btn" title="Admin Panel (Ctrl+Shift+A)">⚙️</button>
+    </div>
+  </footer>
+
+  <!-- ======================== LIGHTBOX ======================== -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+    <button class="lightbox-close" id="lightbox-close">✕</button>
+    <button class="lightbox-prev" id="lightbox-prev">‹</button>
+    <button class="lightbox-next" id="lightbox-next">›</button>
+    <div class="lightbox-content">
+      <img class="lightbox-img" id="lightbox-img" src="" alt="" />
+      <div class="lightbox-info">
+        <h3 id="lightbox-title"></h3>
+        <p id="lightbox-desc"></p>
+        <div class="lightbox-meta"><span id="lightbox-tool"></span><span id="lightbox-cat"></span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================== PROJECT DETAIL PANEL ======================== -->
+  <div class="proj-detail-panel" id="proj-detail-panel">
+    <div class="proj-detail-header">
+      <button class="proj-detail-back" id="proj-detail-close">← Back</button>
+      <div class="proj-detail-heading">
+        <h1 id="pd-name"></h1>
+        <div id="pd-meta" class="pd-meta"></div>
+      </div>
+      <button class="btn btn-sm btn-secondary" id="pd-edit-btn" style="display:none"
+        onclick="openProjDocs(currentDetailProjectId)">✏️ Edit Docs</button>
+    </div>
+    <div class="proj-detail-body">
+      <nav class="proj-detail-nav" id="proj-detail-nav"></nav>
+      <div class="proj-detail-content" id="proj-detail-content"></div>
+    </div>
+  </div>
+
+  <!-- ======================== PROJECT DOCS EDITOR (ADMIN) ======================== -->
+  <div class="proj-docs-overlay" id="proj-docs-overlay">
+    <div class="proj-docs-panel">
+      <div class="proj-docs-header">
+        <div>
+          <h2 id="proj-docs-panel-title">Edit Documentation</h2>
+          <p class="proj-docs-subtitle">Engineering documentation — 15 sections with image upload</p>
+        </div>
+        <div class="proj-docs-header-actions">
+          <button class="btn btn-primary btn-sm" onclick="saveProjDocs()">💾 Save All</button>
+          <button class="admin-close" onclick="closeProjDocs()">✕</button>
+        </div>
+      </div>
+      <div class="proj-docs-body">
+        <nav class="proj-docs-nav" id="proj-docs-nav"></nav>
+        <div class="proj-docs-sections" id="proj-docs-sections"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================== ADMIN PANEL ======================== -->
+  <div class="admin-overlay" id="admin-overlay">
+    <div class="admin-panel" id="admin-panel">
+      <div class="admin-header">
+        <div class="admin-logo"><span class="logo-bracket">&lt;</span>Admin<span class="logo-bracket">/&gt;</span></div>
+        <h2 class="admin-title">Portfolio Manager</h2>
+        <button class="btn btn-secondary btn-sm" onclick="exportData()" style="margin-right: 10px;">📥 Export Data</button>
+        <button class="admin-close" id="admin-close">✕</button>
+      </div>
+
+      <!-- LOGIN -->
+      <div class="admin-login" id="admin-login">
+        <div class="login-icon">🔐</div>
+        <h3>Admin Access</h3>
+        <p>Enter the password to manage your portfolio</p>
+        <form id="login-form" onsubmit="handleLogin(event)">
+          <input type="password" id="admin-password" placeholder="Password" class="admin-input"
+            autocomplete="current-password" />
+          <button type="submit" class="btn btn-primary" id="login-submit-btn">Unlock</button>
+          <p class="login-error" id="login-error"></p>
+        </form>
+      </div>
+
+      <!-- DASHBOARD -->
+      <div class="admin-dashboard" id="admin-dashboard" style="display:none">
+        <div class="admin-tabs">
+          <button class="admin-tab active" data-tab="projects" id="tab-projects">📁 Projects</button>
+          <button class="admin-tab" data-tab="designs" id="tab-designs">🎨 Designs</button>
+          <button class="admin-tab" data-tab="about" id="tab-about">👤 About</button>
+          <button class="admin-tab" data-tab="skills" id="tab-skills">🛠️ Skills</button>
+          <button class="admin-tab" data-tab="experience" id="tab-experience">📅 Experience</button>
+          <button class="admin-tab admin-tab-danger" onclick="adminLogout()">🚪</button>
+        </div>
+
+        <!-- PROJECTS TAB -->
+        <div class="admin-tab-content" id="tab-content-projects">
+          <div class="admin-section-header">
+            <h3>Manage Projects</h3>
+            <button class="btn btn-primary btn-sm" onclick="openProjectForm()">+ Add Project</button>
+          </div>
+          <div class="admin-table-wrap">
+            <table class="admin-table" id="projects-admin-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Category</th>
+                  <th>★</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="projects-admin-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- DESIGNS TAB -->
+        <div class="admin-tab-content" id="tab-content-designs" style="display:none">
+          <div class="admin-section-header">
+            <h3>Manage Designs</h3>
+            <button class="btn btn-primary btn-sm" onclick="openDesignForm()">+ Add Design</button>
+          </div>
+          <div class="designs-admin-grid" id="designs-admin-grid"></div>
+        </div>
+
+        <!-- ABOUT TAB -->
+        <div class="admin-tab-content" id="tab-content-about" style="display:none">
+          <div class="admin-section-header">
+            <h3>Edit About &amp; Profile</h3>
+            <button class="btn btn-primary btn-sm" onclick="saveAbout()">💾 Save Changes</button>
+          </div>
+          <!-- Photo -->
+          <div class="about-admin-card">
+            <h4 class="about-admin-group-title">📸 Profile Photo</h4>
+            <div class="ab-photo-area">
+              <div class="ab-photo-preview-wrap">
+                <img id="ab-photo-preview" src="" alt="Profile photo" class="ab-photo-preview" />
+              </div>
+              <div class="ab-photo-inputs">
+                <input type="file" id="ab-photo-file" accept="image/*" style="display:none"
+                  onchange="handleAboutPhotoUpload(event)" />
+                <button type="button" class="btn btn-secondary btn-sm"
+                  onclick="document.getElementById('ab-photo-file').click()">📂 Upload Photo</button>
+                <span class="upload-or">or</span>
+                <input type="url" id="ab-photo-url-input" class="admin-input" placeholder="Paste image URL..."
+                  oninput="handleAboutPhotoUrl(this.value)" />
+              </div>
+            </div>
+            <input type="hidden" id="ab-photo" value="" />
+          </div>
+          <!-- Basic Info -->
+          <div class="about-admin-card">
+            <h4 class="about-admin-group-title">📋 Basic Info</h4>
+            <div class="form-row">
+              <div class="form-group"><label for="ab-name">Full Name</label><input type="text" id="ab-name"
+                  class="admin-input" /></div>
+              <div class="form-group"><label for="ab-role">Role / Title</label><input type="text" id="ab-role"
+                  class="admin-input" /></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label for="ab-company">Company</label><input type="text" id="ab-company"
+                  class="admin-input" /></div>
+              <div class="form-group"><label for="ab-location">Location</label><input type="text" id="ab-location"
+                  class="admin-input" /></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label for="ab-email">Email</label><input type="email" id="ab-email"
+                  class="admin-input" /></div>
+              <div class="form-group"><label for="ab-website">Website Display</label><input type="text" id="ab-website"
+                  class="admin-input" placeholder="e.g. Fabnest3D.com" /></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label for="ab-websiteUrl">Website URL</label><input type="url" id="ab-websiteUrl"
+                  class="admin-input" /></div>
+              <div class="form-group"><label for="ab-linkedin">LinkedIn URL</label><input type="url" id="ab-linkedin"
+                  class="admin-input" /></div>
+            </div>
+            <div class="form-group"><label for="ab-github">GitHub URL</label><input type="url" id="ab-github"
+                class="admin-input" /></div>
+          </div>
+          <!-- Bio -->
+          <div class="about-admin-card">
+            <h4 class="about-admin-group-title">📝 Bio</h4>
+            <div class="form-group"><label for="ab-bio1">Bio Paragraph 1</label><textarea id="ab-bio1"
+                class="admin-input" rows="3" placeholder="First paragraph about yourself..."></textarea></div>
+            <div class="form-group"><label for="ab-bio2">Bio Paragraph 2</label><textarea id="ab-bio2"
+                class="admin-input" rows="3" placeholder="Second paragraph — what you do and build..."></textarea></div>
+          </div>
+          <!-- Focus Tags -->
+          <div class="about-admin-card">
+            <h4 class="about-admin-group-title">🔭 Current Focus Tags</h4>
+            <div class="focus-tags-editor-wrap" id="about-focus-tags-container"></div>
+            <div class="add-focus-tag-row">
+              <input type="text" id="new-focus-tag-input" class="admin-input" placeholder="e.g. 📡 UWB RTLS"
+                onkeydown="if(event.key==='Enter'){event.preventDefault();addFocusTag()}" />
+              <button type="button" class="btn btn-secondary btn-sm" onclick="addFocusTag()">+ Add</button>
+            </div>
+          </div>
+          <!-- Stats -->
+          <div class="about-admin-card">
+            <h4 class="about-admin-group-title">📊 Stats</h4>
+            <div class="form-row">
+              <div class="form-group"><label for="ab-statRepos">Repos Count</label><input type="number"
+                  id="ab-statRepos" class="admin-input" min="0" /></div>
+              <div class="form-group"><label for="ab-statYears">Years Building</label><input type="text"
+                  id="ab-statYears" class="admin-input" placeholder="e.g. 2+" /></div>
+            </div>
+          </div>
+          <div style="padding:0 0 16px">
+            <button class="btn btn-primary" onclick="saveAbout()" style="width:100%">💾 Save All Changes</button>
+          </div>
+        </div>
+
+        <!-- SKILLS TAB -->
+        <div class="admin-tab-content" id="tab-content-skills" style="display:none">
+          <div class="admin-section-header">
+            <h3>Manage Skills</h3>
+            <button class="btn btn-primary btn-sm" onclick="addSkillCategory()">+ Add Category</button>
+          </div>
+          <div id="skills-admin-container"></div>
+        </div>
+
+        <!-- EXPERIENCE TAB -->
+        <div class="admin-tab-content" id="tab-content-experience" style="display:none">
+          <div class="admin-section-header">
+            <h3>Experience &amp; Timeline</h3>
+            <button class="btn btn-primary btn-sm" onclick="openExperienceForm()">+ Add Entry</button>
+          </div>
+          <div id="experience-admin-list"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================== PROJECT FORM MODAL ======================== -->
+  <div class="form-modal" id="project-form-modal">
+    <div class="form-modal-box">
+      <div class="form-modal-header">
+        <h3 id="project-form-title">Add Project</h3>
+        <button class="admin-close" onclick="closeProjectForm()">✕</button>
+      </div>
+      <form id="project-form" onsubmit="saveProject(event)">
+        <input type="hidden" id="project-edit-id" />
+        <div class="form-group"><label for="p-name">Repository Name <span class="req">*</span></label><input type="text"
+            id="p-name" placeholder="e.g. My-Robot-Project" required class="admin-input" /></div>
+        <div class="form-group"><label for="p-desc">Description <span class="req">*</span></label><textarea id="p-desc"
+            rows="3" placeholder="What does this project do?" required class="admin-input"></textarea></div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="p-cat">Category <span class="req">*</span></label>
+            <select id="p-cat" class="admin-input" required>
+              <option value="">Select category</option>
+              <option value="uwb">📡 UWB</option>
+              <option value="lidar">🗺️ LiDAR</option>
+              <option value="robotics">🤖 Robotics</option>
+              <option value="desktop">🖥️ Desktop Bots</option>
+              <option value="sensor">📊 Sensors</option>
+              <option value="web">🌐 Web</option>
+              <option value="ai">🧠 AI &amp; Vision</option>
+            </select>
+          </div>
+          <div class="form-group"><label for="p-emoji">Emoji</label><input type="text" id="p-emoji" placeholder="🤖"
+              maxlength="4" class="admin-input" /></div>
+        </div>
+        <div class="form-group"><label for="p-url">GitHub URL</label><input type="url" id="p-url"
+            placeholder="https://github.com/DuminduDilshan/..." class="admin-input" /></div>
+        <div class="form-group form-check"><label><input type="checkbox" id="p-featured" /> ⭐ Mark as Featured</label>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-ghost" onclick="closeProjectForm()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Project</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================== DESIGN FORM MODAL ======================== -->
+  <div class="form-modal" id="design-form-modal">
+    <div class="form-modal-box">
+      <div class="form-modal-header">
+        <h3 id="design-form-title">Add Design</h3>
+        <button class="admin-close" onclick="closeDesignForm()">✕</button>
+      </div>
+      <form id="design-form" onsubmit="saveDesign(event)">
+        <input type="hidden" id="design-edit-id" />
+        <div class="form-group"><label for="d-title">Title <span class="req">*</span></label><input type="text"
+            id="d-title" placeholder="e.g. LiDAR Adapter PCB v2" required class="admin-input" /></div>
+        <div class="form-group"><label for="d-desc">Description</label><textarea id="d-desc" rows="3"
+            placeholder="Brief description of this design..." class="admin-input"></textarea></div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="d-cat">Category <span class="req">*</span></label>
+            <select id="d-cat" class="admin-input" required>
+              <option value="">Select category</option>
+              <option value="pcb">🔌 PCB</option>
+              <option value="cad">🖨️ 3D CAD</option>
+              <option value="schematic">📐 Schematic</option>
+              <option value="other">🎨 Other</option>
+            </select>
+          </div>
+          <div class="form-group"><label for="d-tool">Tool Used</label><input type="text" id="d-tool"
+              placeholder="KiCad / Fusion 360 / Blender" class="admin-input" /></div>
+        </div>
+        <div class="form-group">
+          <label>Image</label>
+          <div class="image-upload-area" id="image-upload-area">
+            <div class="image-preview-wrap" id="image-preview-wrap"
+              onclick="document.getElementById('d-image-file').click()">
+              <img id="image-preview" src="" alt="" style="display:none" />
+              <div class="upload-placeholder" id="upload-placeholder"><span class="upload-icon">📁</span>
+                <p>Click to upload image</p>
+                <p class="upload-hint">PNG, JPG, SVG</p>
+              </div>
+            </div>
+            <div class="image-upload-actions">
+              <input type="file" id="d-image-file" accept="image/*" style="display:none"
+                onchange="handleImageUpload(event)" />
+              <button type="button" class="btn btn-secondary btn-sm"
+                onclick="document.getElementById('d-image-file').click()">📂 Upload File</button>
+              <span class="upload-or">or</span>
+              <input type="url" id="d-image-url" placeholder="Paste image URL..." class="admin-input url-input"
+                oninput="handleImageUrl(this.value)" />
+            </div>
+          </div>
+          <input type="hidden" id="d-image-data" />
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-ghost" onclick="closeDesignForm()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Design</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================== EXPERIENCE FORM MODAL ======================== -->
+  <div class="form-modal" id="experience-form-modal">
+    <div class="form-modal-box">
+      <div class="form-modal-header">
+        <h3 id="experience-form-title">Add Experience Entry</h3>
+        <button class="admin-close" onclick="closeExperienceForm()">✕</button>
+      </div>
+      <form id="experience-form" onsubmit="saveExperience(event)">
+        <input type="hidden" id="exp-edit-id" />
+        <div class="form-row">
+          <div class="form-group"><label for="exp-year">Year / Period <span class="req">*</span></label><input
+              type="text" id="exp-year" placeholder="2024 – Present" required class="admin-input" /></div>
+          <div class="form-group">
+            <label for="exp-dot">Dot Color</label>
+            <select id="exp-dot" class="admin-input">
+              <option value="cyan">🔵 Cyan</option>
+              <option value="purple">🟣 Purple</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group"><label for="exp-title">Title <span class="req">*</span></label><input type="text"
+            id="exp-title" placeholder="e.g. Co-Founder · Fabnest" required class="admin-input" /></div>
+        <div class="form-group"><label for="exp-desc">Description</label><textarea id="exp-desc" rows="4"
+            placeholder="What did you do / achieve?" class="admin-input"></textarea></div>
+        <div class="form-group"><label for="exp-tags">Tags <span style="color:var(--text-muted);font-size:0.8rem">(comma
+              separated)</span></label><input type="text" id="exp-tags" placeholder="3D Printing, Web Dev, Business"
+            class="admin-input" /></div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-ghost" onclick="closeExperienceForm()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Entry</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================== DELETE CONFIRM ======================== -->
+  <div class="form-modal" id="confirm-modal">
+    <div class="form-modal-box confirm-box">
+      <div class="confirm-icon">🗑️</div>
+      <h3 id="confirm-title">Delete this item?</h3>
+      <p id="confirm-msg">This action cannot be undone.</p>
+      <div class="form-actions">
+        <button class="btn btn-ghost" onclick="closeConfirm()">Cancel</button>
+        <button class="btn btn-danger" id="confirm-ok-btn">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
