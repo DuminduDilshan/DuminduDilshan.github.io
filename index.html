@@ -343,12 +343,16 @@ me.<span class="fn">say_hi</span>()</code></pre>
         <div class="admin-tab-content" id="tab-content-projects">
           <div class="admin-section-header">
             <h3>Manage Projects</h3>
-            <button class="btn btn-primary btn-sm" onclick="openProjectForm()">+ Add Project</button>
+            <div>
+              <button class="btn btn-danger btn-sm" id="btn-del-projects" style="display:none" onclick="confirmBulkDelete('project')">🗑️ Delete Selected</button>
+              <button class="btn btn-primary btn-sm" onclick="openProjectForm()">+ Add Project</button>
+            </div>
           </div>
           <div class="admin-table-wrap">
             <table class="admin-table" id="projects-admin-table">
               <thead>
                 <tr>
+                  <th style="width:40px"><input type="checkbox" id="sel-all-projects" onclick="toggleSelectAll('project', this.checked)"></th>
                   <th>Name</th>
                   <th>Category</th>
                   <th>★</th>
@@ -364,7 +368,11 @@ me.<span class="fn">say_hi</span>()</code></pre>
         <div class="admin-tab-content" id="tab-content-designs" style="display:none">
           <div class="admin-section-header">
             <h3>Manage Designs</h3>
-            <button class="btn btn-primary btn-sm" onclick="openDesignForm()">+ Add Design</button>
+            <div>
+              <input type="checkbox" id="sel-all-designs" onclick="toggleSelectAll('design', this.checked)" style="margin-right:10px; transform:scale(1.2); vertical-align:middle;" title="Select All">
+              <button class="btn btn-danger btn-sm" id="btn-del-designs" style="display:none" onclick="confirmBulkDelete('design')">🗑️ Delete Selected</button>
+              <button class="btn btn-primary btn-sm" onclick="openDesignForm()">+ Add Design</button>
+            </div>
           </div>
           <div class="designs-admin-grid" id="designs-admin-grid"></div>
         </div>
@@ -470,7 +478,11 @@ me.<span class="fn">say_hi</span>()</code></pre>
         <div class="admin-tab-content" id="tab-content-experience" style="display:none">
           <div class="admin-section-header">
             <h3>Experience &amp; Timeline</h3>
-            <button class="btn btn-primary btn-sm" onclick="openExperienceForm()">+ Add Entry</button>
+            <div>
+              <input type="checkbox" id="sel-all-experience" onclick="toggleSelectAll('experience', this.checked)" style="margin-right:10px; transform:scale(1.2); vertical-align:middle;" title="Select All">
+              <button class="btn btn-danger btn-sm" id="btn-del-experience" style="display:none" onclick="confirmBulkDelete('experience')">🗑️ Delete Selected</button>
+              <button class="btn btn-primary btn-sm" onclick="openExperienceForm()">+ Add Entry</button>
+            </div>
           </div>
           <div id="experience-admin-list"></div>
         </div>
@@ -625,6 +637,10 @@ me.<span class="fn">say_hi</span>()</code></pre>
       </div>
     </div>
   </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-database-compat.js"></script>
 
   <script src="script.js"></script>
 </body>

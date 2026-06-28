@@ -22,6 +22,36 @@ const STORAGE_PROJ_DOCS = 'dd_portfolio_proj_docs';
 const ADMIN_PASSWORD    = 'DumiFab@2003';
 
 // =====================================================
+// FIREBASE CONFIG & APP STATE
+// =====================================================
+const firebaseConfig = {
+  apiKey: "AIzaSyByFM7NvOFwLLYRsmDw-719shfxWOYTjC8",
+  authDomain: "portfolio-db-5a7f6.firebaseapp.com",
+  databaseURL: "https://portfolio-db-5a7f6-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "portfolio-db-5a7f6",
+  storageBucket: "portfolio-db-5a7f6.firebasestorage.app",
+  messagingSenderId: "377878094413",
+  appId: "1:377878094413:web:0041463e519bcd0a813204",
+  measurementId: "G-PHYKZVH44M"
+};
+
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+
+let appData = {
+  projects: [],
+  designs: [],
+  profile: {},
+  skills: [],
+  experience: [],
+  proj_docs: {}
+};
+
+function saveToFirebase() {
+  database.ref('portfolioData').set(appData);
+}
+
+// =====================================================
 // DOC SECTIONS (15 engineering sections per project)
 // =====================================================
 const DOC_SECTIONS = [
@@ -145,22 +175,20 @@ const DEFAULT_PROJECTS = [
 // DATA MANAGER
 // =====================================================
 const DM = {
-  get(key, def)  { try { const s = localStorage.getItem(key); return s ? JSON.parse(s) : def; } catch { return def; } },
-  set(key, val)  { localStorage.setItem(key, JSON.stringify(val)); },
   genId()        { return 'id_' + Date.now() + '_' + Math.random().toString(36).slice(2,6); },
 
-  getProjects()  { return this.get(STORAGE_PROJECTS,  DEFAULT_PROJECTS.map(p => ({...p}))); },
-  saveProjects(v){ this.set(STORAGE_PROJECTS, v); },
-  getDesigns()   { return this.get(STORAGE_DESIGNS,   []); },
-  saveDesigns(v) { this.set(STORAGE_DESIGNS, v); },
-  getProfile()   { return { ...DEFAULT_PROFILE, ...this.get(STORAGE_PROFILE, {}) }; },
-  saveProfile(v) { this.set(STORAGE_PROFILE, v); },
-  getSkills()    { return this.get(STORAGE_SKILLS,    DEFAULT_SKILLS.map(c => ({...c, skills:[...c.skills]}))); },
-  saveSkills(v)  { this.set(STORAGE_SKILLS, v); },
-  getExperience(){ return this.get(STORAGE_EXPERIENCE, DEFAULT_EXPERIENCE.map(e => ({...e, tags:[...e.tags]}))); },
-  saveExperience(v){ this.set(STORAGE_EXPERIENCE, v); },
-  getAllDocs()    { return this.get(STORAGE_PROJ_DOCS, {}); },
-  saveAllDocs(v) { this.set(STORAGE_PROJ_DOCS, v); },
+  getProjects()  { return appData.projects; },
+  saveProjects(v){ appData.projects = v; saveToFirebase(); },
+  getDesigns()   { return appData.designs; },
+  saveDesigns(v) { appData.designs = v; saveToFirebase(); },
+  getProfile()   { return appData.profile; },
+  saveProfile(v) { appData.profile = v; saveToFirebase(); },
+  getSkills()    { return appData.skills; },
+  saveSkills(v)  { appData.skills = v; saveToFirebase(); },
+  getExperience(){ return appData.experience; },
+  saveExperience(v){ appData.experience = v; saveToFirebase(); },
+  getAllDocs()   { return appData.proj_docs; },
+  saveAllDocs(v) { appData.proj_docs = v; saveToFirebase(); },
   getProjectDocs(id){ const all = this.getAllDocs(); return all[id] || {}; },
 };
 
@@ -674,10 +702,13 @@ function refreshProjectsTable() {
   const tbody    = document.getElementById('projects-admin-tbody');
   const projects = DM.getProjects();
   tbody.innerHTML = '';
+  const selAll = document.getElementById('sel-all-projects'); if(selAll) selAll.checked = false;
+  updateBulkDeleteButton('project');
   projects.forEach(p => {
     const b  = CAT_BADGE[p.cat]||{label:p.cat,cls:''};
     const tr = document.createElement('tr');
     tr.innerHTML = `
+      <td><input type="checkbox" class="cb-project" value="${p.id}" onclick="updateBulkDeleteButton('project')"></td>
       <td class="tbl-name" title="${esc(p.name)}">${esc(p.emoji||'')} ${esc(p.name)}</td>
       <td><span class="project-cat-badge ${b.cls}" style="font-size:11px">${b.label}</span></td>
       <td>${p.featured?'<span class="featured-star">⭐</span>':'—'}</td>
@@ -731,11 +762,14 @@ function refreshDesignsAdminGrid() {
   const grid    = document.getElementById('designs-admin-grid');
   const designs = DM.getDesigns();
   grid.innerHTML = '';
+  const selAll = document.getElementById('sel-all-designs'); if(selAll) selAll.checked = false;
+  updateBulkDeleteButton('design');
   if (!designs.length) { grid.innerHTML='<p style="color:var(--text-muted);text-align:center;padding:40px;grid-column:1/-1">No designs yet. Click "+ Add Design".</p>'; return; }
   designs.forEach(d => {
     const card = document.createElement('div');
     card.className = 'design-admin-card';
     card.innerHTML = `
+      <input type="checkbox" class="cb-design" value="${d.id}" onclick="updateBulkDeleteButton('design')" style="position:absolute; top:8px; left:8px; z-index:10; transform:scale(1.2);">
       <div class="design-admin-thumb">${d.image?`<img src="${d.image}" alt="${esc(d.title)}" />`:`<div class="no-img">${d.cat==='pcb'?'🔌':d.cat==='cad'?'🖨️':'📐'}</div>`}</div>
       <div class="design-admin-body">
         <div class="design-admin-title" title="${esc(d.title)}">${esc(d.title)}</div>
@@ -963,9 +997,12 @@ function renderExperienceAdmin() {
   const exps      = DM.getExperience();
   const container = document.getElementById('experience-admin-list');
   if (!container) return;
+  const selAll = document.getElementById('sel-all-experience'); if(selAll) selAll.checked = false;
+  updateBulkDeleteButton('experience');
   if (!exps.length) { container.innerHTML='<p style="color:var(--text-muted);text-align:center;padding:32px">No entries yet.</p>'; return; }
   container.innerHTML = `<div class="exp-admin-list">${exps.map(exp=>`
-    <div class="exp-admin-item">
+    <div class="exp-admin-item" style="position:relative; padding-left:30px;">
+      <input type="checkbox" class="cb-experience" value="${exp.id}" onclick="updateBulkDeleteButton('experience')" style="position:absolute; left:0px; top:50%; transform:translateY(-50%) scale(1.2);">
       <div class="exp-admin-dot dot-${exp.dot||'cyan'}"></div>
       <div class="exp-admin-content">
         <div class="exp-admin-year">${esc(exp.year)}</div>
@@ -1008,6 +1045,45 @@ function saveExperience(e) {
   DM.saveExperience(exps);
   closeExperienceForm(); renderExperience(); renderExperienceAdmin();
   showToast(editId?'✅ Entry updated!':'✅ Entry added!');
+}
+
+// =====================================================
+// BULK DELETE
+// =====================================================
+function toggleSelectAll(type, checked) {
+  document.querySelectorAll(`.cb-${type}`).forEach(cb => cb.checked = checked);
+  updateBulkDeleteButton(type);
+}
+
+function updateBulkDeleteButton(type) {
+  const count = document.querySelectorAll(`.cb-${type}:checked`).length;
+  const actualBtn = document.getElementById(`btn-del-${type === 'experience' ? 'experience' : type + 's'}`);
+  if (actualBtn) {
+    actualBtn.style.display = count > 0 ? 'inline-block' : 'none';
+    actualBtn.textContent = `🗑️ Delete Selected (\${count})`;
+  }
+}
+
+function confirmBulkDelete(type) {
+  const checked = document.querySelectorAll(`.cb-${type}:checked`);
+  if (checked.length === 0) return;
+  const ids = Array.from(checked).map(cb => cb.value);
+  document.getElementById('confirm-title').textContent = `Delete \${ids.length} \${type}(s)?`;
+  document.getElementById('confirm-msg').textContent   = 'This action cannot be undone.';
+  confirmCallback = () => {
+    if (type==='project') {
+      DM.saveProjects(DM.getProjects().filter(p => !ids.includes(p.id)));
+      renderProjects(currentProjectFilter); refreshProjectsTable(); showToast(`🗑️ \${ids.length} project(s) deleted.`);
+    } else if (type==='design') {
+      DM.saveDesigns(DM.getDesigns().filter(d => !ids.includes(d.id)));
+      renderDesigns(currentDesignFilter); refreshDesignsAdminGrid(); showToast(`🗑️ \${ids.length} design(s) deleted.`);
+    } else if (type==='experience') {
+      DM.saveExperience(DM.getExperience().filter(e => !ids.includes(e.id)));
+      renderExperience(); renderExperienceAdmin(); showToast(`🗑️ \${ids.length} entry(s) deleted.`);
+    }
+    closeConfirm();
+  };
+  document.getElementById('confirm-modal').classList.add('open');
 }
 
 // =====================================================
@@ -1081,9 +1157,6 @@ function attachReveal() { document.querySelectorAll('.reveal:not(.visible)').for
 // INIT
 // =====================================================
 document.addEventListener('DOMContentLoaded', () => {
-  // Init localStorage if first visit
-  if (!localStorage.getItem(STORAGE_PROJECTS)) DM.saveProjects(DEFAULT_PROJECTS.map(p=>({...p})));
-
   typeLoop();
   initNavbar();
   initProjectFilters();
@@ -1093,16 +1166,63 @@ document.addEventListener('DOMContentLoaded', () => {
   initConfirmModal();
   initProjectDetailPanel();
 
-  // Render all dynamic sections
-  renderProfile();
-  renderSkills();
-  renderExperience();
-  renderProjects('all');
-  renderDesigns('all');
+  // Load from Firebase
+  database.ref('portfolioData').on('value', (snapshot) => {
+    const data = snapshot.val();
+    if (data) {
+      // Data exists in Firebase, update local state
+      appData = {
+        projects: data.projects || [],
+        designs: data.designs || [],
+        profile: { ...DEFAULT_PROFILE, ...(data.profile || {}) },
+        skills: data.skills || [],
+        experience: data.experience || [],
+        proj_docs: data.proj_docs || {}
+      };
+    } else {
+      // First time loading, Firebase is empty.
+      // Migrate from localStorage if exists, otherwise use defaults.
+      const localProjects = localStorage.getItem(STORAGE_PROJECTS);
+      if (localProjects) {
+        try {
+          appData.projects = JSON.parse(localProjects);
+          appData.designs = JSON.parse(localStorage.getItem(STORAGE_DESIGNS) || '[]');
+          appData.profile = { ...DEFAULT_PROFILE, ...JSON.parse(localStorage.getItem(STORAGE_PROFILE) || '{}') };
+          appData.skills = JSON.parse(localStorage.getItem(STORAGE_SKILLS) || '[]');
+          appData.experience = JSON.parse(localStorage.getItem(STORAGE_EXPERIENCE) || '[]');
+          appData.proj_docs = JSON.parse(localStorage.getItem(STORAGE_PROJ_DOCS) || '{}');
+        } catch(e) { console.error('Migration error', e); }
+      } else {
+        appData.projects = DEFAULT_PROJECTS.map(p => ({...p}));
+        appData.designs = [];
+        appData.profile = {...DEFAULT_PROFILE};
+        appData.skills = DEFAULT_SKILLS.map(c => ({...c, skills:[...c.skills]}));
+        appData.experience = DEFAULT_EXPERIENCE.map(e => ({...e, tags:[...e.tags]}));
+        appData.proj_docs = {};
+      }
+      saveToFirebase();
+    }
 
-  // Apply reveal to static elements
-  document.querySelectorAll('.stat-card,.contact-card').forEach(el => el.classList.add('reveal'));
-  attachReveal();
+    // Render all dynamic sections with loaded data
+    renderProfile();
+    renderSkills();
+    renderExperience();
+    renderProjects(currentProjectFilter);
+    renderDesigns(currentDesignFilter);
+
+    // Apply reveal to static elements
+    document.querySelectorAll('.stat-card,.contact-card').forEach(el => el.classList.add('reveal'));
+    attachReveal();
+
+    // Refresh admin UI if it is currently open
+    if (adminAuthed) {
+      refreshProjectsTable();
+      refreshDesignsAdminGrid();
+      populateAboutForm();
+      renderSkillsAdmin();
+      renderExperienceAdmin();
+    }
+  });
 });
 
 // =====================================================
@@ -1141,6 +1261,7 @@ Object.assign(window, {
   addSkillCategory, addSkill, removeSkill, updateSkillCat,
   openExperienceForm, closeExperienceForm, saveExperience, editExperience,
   confirmDelete, closeConfirm, handleFormSubmit, exportData,
+  toggleSelectAll, updateBulkDeleteButton, confirmBulkDelete,
   // expose for admin panel edit button
   get currentDetailProjectId() { return currentDetailProjectId; },
 });
