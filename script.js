@@ -420,26 +420,55 @@ function initDesignFilters() {
 // LIGHTBOX (Designs)
 // =====================================================
 let lbList=[], lbIdx=0;
-function openLightbox(idx, list) { lbList=list; lbIdx=idx; showLightboxItem(); document.getElementById('lightbox').classList.add('open'); document.body.style.overflow='hidden'; }
+// Inner image state — navigating images within one design
+let lbImgList=[], lbImgIdx=0;
+
+function openLightbox(idx, list) {
+  lbList=list; lbIdx=idx;
+  showLightboxItem();
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
 function showLightboxItem() {
   const d=lbList[lbIdx]; if(!d) return;
   const b=DESIGN_BADGE[d.cat]||{label:d.cat};
-  const img=document.getElementById('lightbox-img');
-  img.src=d.image||''; img.alt=d.title; img.style.display=d.image?'block':'none';
+  // Build inner image list: prefer d.images[], fall back to d.image
+  lbImgList = (d.images && d.images.length) ? d.images : (d.image ? [d.image] : []);
+  lbImgIdx  = 0;
+  _updateLightboxImage();
   document.getElementById('lightbox-title').textContent=d.title;
   document.getElementById('lightbox-desc').textContent=d.desc||'';
   document.getElementById('lightbox-tool').textContent=d.tool?'🔧 '+d.tool:'';
   document.getElementById('lightbox-cat').textContent=b.label;
-  const showArrows=lbList.length>1;
-  document.getElementById('lightbox-prev').style.display=showArrows?'':'none';
-  document.getElementById('lightbox-next').style.display=showArrows?'':'none';
+  // Outer design arrows
+  const showOuter=lbList.length>1;
+  document.getElementById('lightbox-prev').style.display=showOuter?'':'none';
+  document.getElementById('lightbox-next').style.display=showOuter?'':'none';
 }
+
+function _updateLightboxImage() {
+  const imgEl  = document.getElementById('lightbox-img');
+  const navEl  = document.getElementById('lightbox-inner-nav');
+  const cntEl  = document.getElementById('lightbox-img-counter');
+  const src    = lbImgList[lbImgIdx]||'';
+  imgEl.src    = src; imgEl.style.display=src?'block':'none';
+  const multi  = lbImgList.length > 1;
+  navEl.style.display = multi ? 'flex' : 'none';
+  if (multi) cntEl.textContent = (lbImgIdx+1)+' / '+lbImgList.length;
+}
+
 function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); document.body.style.overflow=''; }
+
 function initLightbox() {
   document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
   document.getElementById('lightbox').addEventListener('click', e => { if(e.target===document.getElementById('lightbox')) closeLightbox(); });
+  // Outer design navigation
   document.getElementById('lightbox-prev').addEventListener('click', () => { lbIdx=(lbIdx-1+lbList.length)%lbList.length; showLightboxItem(); });
   document.getElementById('lightbox-next').addEventListener('click', () => { lbIdx=(lbIdx+1)%lbList.length; showLightboxItem(); });
+  // Inner image navigation
+  document.getElementById('lightbox-img-prev').addEventListener('click', () => { lbImgIdx=(lbImgIdx-1+lbImgList.length)%lbImgList.length; _updateLightboxImage(); });
+  document.getElementById('lightbox-img-next').addEventListener('click', () => { lbImgIdx=(lbImgIdx+1)%lbImgList.length; _updateLightboxImage(); });
   document.addEventListener('keydown', e => {
     if (!document.getElementById('lightbox').classList.contains('open')) return;
     if (e.key==='Escape') closeLightbox();
@@ -788,15 +817,56 @@ function refreshDesignsAdminGrid() {
 // =====================================================
 // DESIGN FORM
 // =====================================================
-let currentDesignImageData = '';
+// currentDesignImages holds the array of images being edited in the form
+let currentDesignImages = [];
+
+// ---------- Render thumbnail strip ----------
+function renderDesignImageList() {
+  const list = document.getElementById('design-img-list');
+  if (!list) return;
+  list.innerHTML = currentDesignImages.map((src, i) => `
+    <div class="design-img-thumb" title="Image ${i+1}${i===0?' (cover)':''}">
+      <img src="${src}" alt="Image ${i+1}" />
+      <button type="button" class="design-img-remove" onclick="removeDesignImage(${i})" title="Remove">✕</button>
+    </div>`).join('');
+}
+
+// ---------- Add images via file upload ----------
+function addDesignImageFile(e) {
+  const files = Array.from(e.target.files); if(!files.length) return;
+  let loaded = 0;
+  files.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = ev => {
+      currentDesignImages.push(ev.target.result);
+      loaded++;
+      if (loaded === files.length) renderDesignImageList();
+    };
+    reader.readAsDataURL(file);
+  });
+  e.target.value = ''; // reset so same file can be re-added
+}
+
+// ---------- Add image via URL ----------
+function addDesignImageUrl(url) {
+  url = (url||'').trim(); if(!url) return;
+  currentDesignImages.push(url);
+  renderDesignImageList();
+}
+
+// ---------- Remove image at index ----------
+function removeDesignImage(idx) {
+  currentDesignImages.splice(idx, 1);
+  renderDesignImageList();
+}
+
+// ---------- Open design form ----------
 function openDesignForm(id) {
-  currentDesignImageData = '';
-  document.getElementById('design-form-title').textContent = id?'Edit Design':'Add Design';
+  currentDesignImages = [];
+  document.getElementById('design-form-title').textContent = id ? 'Edit Design' : 'Add Design';
   document.getElementById('design-form').reset();
-  document.getElementById('design-edit-id').value  = '';
-  document.getElementById('d-image-data').value    = '';
-  document.getElementById('image-preview').style.display = 'none';
-  document.getElementById('upload-placeholder').style.display = '';
+  document.getElementById('design-edit-id').value = '';
+  document.getElementById('d-image-data').value   = '';
   if (id) {
     const d = DM.getDesigns().find(x=>x.id===id); if(!d) return;
     document.getElementById('d-title').value        = d.title;
@@ -804,45 +874,32 @@ function openDesignForm(id) {
     document.getElementById('d-cat').value          = d.cat;
     document.getElementById('d-tool').value         = d.tool||'';
     document.getElementById('design-edit-id').value = id;
-    document.getElementById('d-image-data').value   = d.image||'';
-    currentDesignImageData = d.image||'';
-    if (d.image) {
-      document.getElementById('image-preview').src = d.image;
-      document.getElementById('image-preview').style.display  = 'block';
-      document.getElementById('upload-placeholder').style.display = 'none';
-      if (d.image.startsWith('http')) document.getElementById('d-image-url').value = d.image;
-    }
+    // Load images array (or fall back to legacy single image field)
+    currentDesignImages = (d.images && d.images.length) ? [...d.images] : (d.image ? [d.image] : []);
   }
+  renderDesignImageList();
   document.getElementById('design-form-modal').classList.add('open');
 }
-function closeDesignForm() { document.getElementById('design-form-modal').classList.remove('open'); currentDesignImageData=''; }
-function handleImageUpload(e) {
-  const file=e.target.files[0]; if(!file) return;
-  const reader=new FileReader();
-  reader.onload=ev => {
-    currentDesignImageData=ev.target.result;
-    document.getElementById('d-image-data').value=currentDesignImageData;
-    document.getElementById('image-preview').src=currentDesignImageData;
-    document.getElementById('image-preview').style.display='block';
-    document.getElementById('upload-placeholder').style.display='none';
-    document.getElementById('d-image-url').value='';
-  };
-  reader.readAsDataURL(file);
+
+function closeDesignForm() {
+  document.getElementById('design-form-modal').classList.remove('open');
+  currentDesignImages = [];
 }
-function handleImageUrl(url) {
-  if (!url) return;
-  currentDesignImageData=url;
-  document.getElementById('d-image-data').value=url;
-  document.getElementById('image-preview').src=url;
-  document.getElementById('image-preview').style.display='block';
-  document.getElementById('upload-placeholder').style.display='none';
-}
+
 function saveDesign(e) {
   e.preventDefault();
   const designs = DM.getDesigns();
   const editId  = document.getElementById('design-edit-id').value;
-  const imgData = document.getElementById('d-image-data').value||currentDesignImageData;
-  const data = { title:document.getElementById('d-title').value.trim(), desc:document.getElementById('d-desc').value.trim(), cat:document.getElementById('d-cat').value, tool:document.getElementById('d-tool').value.trim(), image:imgData };
+  const images  = [...currentDesignImages]; // copy
+  const cover   = images[0] || '';
+  const data = {
+    title:  document.getElementById('d-title').value.trim(),
+    desc:   document.getElementById('d-desc').value.trim(),
+    cat:    document.getElementById('d-cat').value,
+    tool:   document.getElementById('d-tool').value.trim(),
+    image:  cover,   // first image = cover (backward compat)
+    images: images,  // full array
+  };
   if (editId) { const idx=designs.findIndex(d=>d.id===editId); if(idx!==-1) designs[idx]={...designs[idx],...data}; }
   else designs.push({ id:DM.genId(), ...data });
   DM.saveDesigns(designs);

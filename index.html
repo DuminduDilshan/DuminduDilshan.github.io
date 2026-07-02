@@ -259,6 +259,12 @@ me.<span class="fn">say_hi</span>()</code></pre>
     <button class="lightbox-prev" id="lightbox-prev">‹</button>
     <button class="lightbox-next" id="lightbox-next">›</button>
     <div class="lightbox-content">
+      <!-- Inner image navigation (multiple images within one design) -->
+      <div class="lightbox-inner-nav" id="lightbox-inner-nav" style="display:none">
+        <button class="lightbox-img-prev" id="lightbox-img-prev">‹</button>
+        <span class="lightbox-img-counter" id="lightbox-img-counter">1 / 1</span>
+        <button class="lightbox-img-next" id="lightbox-img-next">›</button>
+      </div>
       <img class="lightbox-img" id="lightbox-img" src="" alt="" />
       <div class="lightbox-info">
         <h3 id="lightbox-title"></h3>
@@ -560,25 +566,21 @@ me.<span class="fn">say_hi</span>()</code></pre>
               placeholder="KiCad / Fusion 360 / Blender" class="admin-input" /></div>
         </div>
         <div class="form-group">
-          <label>Image</label>
-          <div class="image-upload-area" id="image-upload-area">
-            <div class="image-preview-wrap" id="image-preview-wrap"
-              onclick="document.getElementById('d-image-file').click()">
-              <img id="image-preview" src="" alt="" style="display:none" />
-              <div class="upload-placeholder" id="upload-placeholder"><span class="upload-icon">📁</span>
-                <p>Click to upload image</p>
-                <p class="upload-hint">PNG, JPG, SVG</p>
-              </div>
-            </div>
-            <div class="image-upload-actions">
-              <input type="file" id="d-image-file" accept="image/*" style="display:none"
-                onchange="handleImageUpload(event)" />
-              <button type="button" class="btn btn-secondary btn-sm"
-                onclick="document.getElementById('d-image-file').click()">📂 Upload File</button>
-              <span class="upload-or">or</span>
-              <input type="url" id="d-image-url" placeholder="Paste image URL..." class="admin-input url-input"
-                oninput="handleImageUrl(this.value)" />
-            </div>
+          <label>Images <span style="color:var(--text-muted);font-size:.8rem">(first image = cover)</span></label>
+          <!-- Thumbnail strip -->
+          <div class="design-img-list" id="design-img-list"></div>
+          <!-- Add image controls -->
+          <div class="design-img-add-row">
+            <input type="file" id="d-image-file" accept="image/*" style="display:none"
+              onchange="addDesignImageFile(event)" multiple />
+            <button type="button" class="btn btn-secondary btn-sm"
+              onclick="document.getElementById('d-image-file').click()">📂 Add Image(s)</button>
+            <span class="upload-or">or</span>
+            <input type="url" id="d-image-url" placeholder="Paste image URL and press Enter..."
+              class="admin-input url-input" id="d-image-url"
+              onkeydown="if(event.key==='Enter'){event.preventDefault();addDesignImageUrl(this.value);this.value='';}" />
+            <button type="button" class="btn btn-ghost btn-sm"
+              onclick="const u=document.getElementById('d-image-url');addDesignImageUrl(u.value);u.value='';">Add URL</button>
           </div>
           <input type="hidden" id="d-image-data" />
         </div>
