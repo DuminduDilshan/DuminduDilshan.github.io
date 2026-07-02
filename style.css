@@ -359,7 +359,7 @@ img{max-width:100%;display:block}
 .featured-star{color:#FFD700}
 /* Designs Admin Grid */
 .designs-admin-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
-.design-admin-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:var(--transition)}
+.design-admin-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:var(--transition);position:relative}
 .design-admin-card:hover{border-color:var(--border-hov)}
 .design-admin-thumb{aspect-ratio:16/9;background:var(--bg4);position:relative}
 .design-admin-thumb img{width:100%;height:100%;object-fit:cover}

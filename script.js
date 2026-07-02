@@ -472,27 +472,30 @@ function openProjectDetail(id) {
   // Nav
   const navEl = document.getElementById('proj-detail-nav');
   navEl.innerHTML = filledSections.map(s => {
-    return `<a href="#pd-sec-\${s.key}" class="pd-nav-link" onclick="scrollToDetailSection('\${s.key}',event)">\${s.icon} \${s.title}</a>`;
+    return '<a href="#pd-sec-' + s.key + '" class="pd-nav-link" onclick="scrollToDetailSection(\'' + s.key + '\',event)">' + s.icon + ' ' + s.title + '</a>';
   }).join('');
   // Content
   const contentEl = document.getElementById('proj-detail-content');
   const totalFilled = filledSections.length;
-  contentEl.innerHTML = `
-    <div class="pd-intro">
-      <p class="pd-desc">\${esc(p.desc)}</p>
-      \${totalFilled===0?\`<div class="pd-empty-section" style="margin-top:24px">
-        <p>📖 No engineering documentation added yet.</p>
-        \${adminAuthed?'<p style="margin-top:8px;font-size:.85rem">Use the <strong>✏️ Edit Docs</strong> button above to add project documentation.</p>':''}
-      </div>\`:\`\`}
-    </div>
-    \${filledSections.map(s => {
-      const sec = docs[s.key];
-      return \`<div class="pd-section" id="pd-sec-\${s.key}">
-        <h2 class="pd-section-title">\${s.icon} \${s.title}</h2>
-        \${sec.text?\`<div class="pd-section-text">\${nl2br(sec.text)}</div>\`:\`\`}
-        \${sec.image?\`<div class="pd-section-img-wrap"><img src="\${sec.image}" alt="\${esc(s.title)}" class="pd-section-img" onclick="openSingleImageLightbox('\${sec.image.replace(/'/g,'\\\\\\'')}')" /></div>\`:\`\`}
-      </div>\`;
-    }).join('')}\`;
+  let detailHtml = '<div class="pd-intro"><p class="pd-desc">' + esc(p.desc) + '</p>';
+  if (totalFilled === 0) {
+    detailHtml += '<div class="pd-empty-section" style="margin-top:24px"><p>📖 No engineering documentation added yet.</p>';
+    if (adminAuthed) detailHtml += '<p style="margin-top:8px;font-size:.85rem">Use the <strong>✏️ Edit Docs</strong> button above to add project documentation.</p>';
+    detailHtml += '</div>';
+  }
+  detailHtml += '</div>';
+  filledSections.forEach(s => {
+    const sec = docs[s.key];
+    detailHtml += '<div class="pd-section" id="pd-sec-' + s.key + '">';
+    detailHtml += '<h2 class="pd-section-title">' + s.icon + ' ' + s.title + '</h2>';
+    if (sec.text) detailHtml += '<div class="pd-section-text">' + nl2br(sec.text) + '</div>';
+    if (sec.image) {
+      const escapedSrc = sec.image.replace(/'/g, "\\'");
+      detailHtml += '<div class="pd-section-img-wrap"><img src="' + sec.image + '" alt="' + esc(s.title) + '" class="pd-section-img" onclick="openSingleImageLightbox(\'' + escapedSrc + '\')" /></div>';
+    }
+    detailHtml += '</div>';
+  });
+  contentEl.innerHTML = detailHtml;
   // Open panel
   document.getElementById('proj-detail-panel').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -1060,7 +1063,7 @@ function updateBulkDeleteButton(type) {
   const actualBtn = document.getElementById(`btn-del-${type === 'experience' ? 'experience' : type + 's'}`);
   if (actualBtn) {
     actualBtn.style.display = count > 0 ? 'inline-block' : 'none';
-    actualBtn.textContent = `🗑️ Delete Selected (\${count})`;
+    actualBtn.textContent = `🗑️ Delete Selected (${count})`;
   }
 }
 
@@ -1068,18 +1071,18 @@ function confirmBulkDelete(type) {
   const checked = document.querySelectorAll(`.cb-${type}:checked`);
   if (checked.length === 0) return;
   const ids = Array.from(checked).map(cb => cb.value);
-  document.getElementById('confirm-title').textContent = `Delete \${ids.length} \${type}(s)?`;
+  document.getElementById('confirm-title').textContent = `Delete ${ids.length} ${type}(s)?`;
   document.getElementById('confirm-msg').textContent   = 'This action cannot be undone.';
   confirmCallback = () => {
     if (type==='project') {
       DM.saveProjects(DM.getProjects().filter(p => !ids.includes(p.id)));
-      renderProjects(currentProjectFilter); refreshProjectsTable(); showToast(`🗑️ \${ids.length} project(s) deleted.`);
+      renderProjects(currentProjectFilter); refreshProjectsTable(); showToast(`🗑️ ${ids.length} project(s) deleted.`);
     } else if (type==='design') {
       DM.saveDesigns(DM.getDesigns().filter(d => !ids.includes(d.id)));
-      renderDesigns(currentDesignFilter); refreshDesignsAdminGrid(); showToast(`🗑️ \${ids.length} design(s) deleted.`);
+      renderDesigns(currentDesignFilter); refreshDesignsAdminGrid(); showToast(`🗑️ ${ids.length} design(s) deleted.`);
     } else if (type==='experience') {
       DM.saveExperience(DM.getExperience().filter(e => !ids.includes(e.id)));
-      renderExperience(); renderExperienceAdmin(); showToast(`🗑️ \${ids.length} entry(s) deleted.`);
+      renderExperience(); renderExperienceAdmin(); showToast(`🗑️ ${ids.length} entry(s) deleted.`);
     }
     closeConfirm();
   };
